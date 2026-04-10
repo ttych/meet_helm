@@ -1,0 +1,17 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: clinic-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        # L'astuce magique Helm : si app.contextPath est vide, on force "/"
+        path: {{ .Values.app.contextPath | default "/" }}
+        backend:
+          service:
+            name: clinic-service
+            port:
+              number: {{ .Values.service.port }}
